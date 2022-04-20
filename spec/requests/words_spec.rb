@@ -1,7 +1,25 @@
 require 'rails_helper'
 
-RSpec.describe "Words", type: :request do
-  describe "GET /index" do
-    pending "add some examples (or delete) #{__FILE__}"
+RSpec.describe WordsController, type: :controller do
+  describe 'GET /words' do
+    context 'When some words present' do
+      it 'Assigns @words' do
+        word = Word.create(value: 'dog', language: 'English')
+        get :index
+        expect(assigns(:words)).to eq([word])
+      end
+    end
+
+    context 'When no words' do
+      it 'Assigns @words' do
+        get :index
+        expect(assigns(:words)).to eq([])
+      end
+    end
+
+    it 'Renders the index template' do
+      get :index
+      expect(response).to render_template(:index)
+    end
   end
 end
