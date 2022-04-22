@@ -1,11 +1,14 @@
-%h1 Index View
-%p
-  We have
-  = @words.count
-  words in Database
+%h1 Words
 
-%table
-  - @words.each do |word|
+%table.table
+  %thead
     %tr
-      %td= word.value
-      %td= word.language
+      %th Value
+      %th Language
+  %tbody
+    - @words.each do |word|
+      %tr
+        %td
+          = word.value
+        %td
+          = word.language
