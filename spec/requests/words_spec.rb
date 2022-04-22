@@ -62,4 +62,22 @@ RSpec.describe WordsController, type: :controller do
       end
     end
   end
+
+  describe 'GET show' do
+    before { get :show, params: params }
+
+    let(:params) do
+      { id: word.id }
+    end
+
+    let(:word) { create(:word) }
+
+    it 'Assigns @word' do
+      expect(assigns(:word)).to eq(word)
+    end
+
+    it 'Renders the new template' do
+      expect(response).to render_template(:show)
+    end
+  end
 end
