@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :word do
-    value { 'cat' }
-    language { 'English' }
+    content { 'cat' }
+    language
   end
 end
