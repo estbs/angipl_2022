@@ -5,6 +5,7 @@
     %tr
       %th Content
       %th Language
+      %th Email
       %th Actions
   %tbody
     - @words.each do |word|
@@ -13,6 +14,8 @@
           = word.content
         %td
           = word.language.name
+        %td
+          = word.user&.email
         %td
           = link_to('Show', word_path(word), class: 'btn btn-primary')
           = link_to('Edit', edit_word_path(word), class: 'btn btn-primary')
