@@ -160,7 +160,7 @@ RSpec.describe WordsController, type: :controller do
   end
 
   describe 'GET edit' do
-    before { get :edit, params: params }
+    subject { get :edit, params: params }
 
     let(:params) do
       { id: word.id }
@@ -168,41 +168,90 @@ RSpec.describe WordsController, type: :controller do
 
     let(:word) { create(:word) }
 
-    it 'Assigns @word' do
-      expect(assigns(:word)).to eq(word)
+    context 'When user is signed in' do
+      let(:user) { create(:user) }
+      before do
+        sign_in(user)
+        subject
+      end
+
+      it 'Assigns @word' do
+        expect(assigns(:word)).to eq(word)
+      end
+
+      it 'Renders the edit template' do
+        expect(response).to render_template(:edit)
+      end
     end
 
-    it 'Renders the edit template' do
-      expect(response).to render_template(:edit)
+    context 'When user is not signed in' do
+      it 'Does not assign @word' do
+        expect(assigns(:word)).to eq(nil)
+      end
+
+      it do
+        subject
+        expect(response).to have_http_status(302)
+      end
     end
   end
 
   describe 'PUT update' do
-    subject { put :update, params: params }
     let(:word) { create(:word, content: 'cat', language: language_en) }
     let(:language_en) { create(:language, name: 'English') }
     let(:language_es) { create(:language, name: 'Spanish') }
 
-    context 'Valid params' do
-      let(:params) do
-        { id: word.id, word: { content: 'gato', language_id: language_es.id } }
+    context 'When user is signed in' do
+      let(:user) { create(:user) }
+      before { sign_in(user) }
+
+      context 'Valid params' do
+        subject { put :update, params: params }
+        let(:params) do
+          { id: word.id, word: { content: 'gato', language_id: language_es.id } }
+        end
+
+        it 'updates word' do
+          expect { subject }.to change { word.reload.content }
+            .from('cat').to('gato')
+            .and change { word.reload.language }
+            .from(language_en).to(language_es)
+        end
       end
 
-      it 'updates word' do
-        expect { subject }.to change { word.reload.content }
-          .from('cat').to('gato')
-          .and change { word.reload.language }
-          .from(language_en).to(language_es)
+      context 'Invalid params' do
+        subject { put :update, params: params }
+        let(:params) do
+          { id: word.id, word: { content: '' } }
+        end
+
+        it 'does not update word' do
+          expect { subject }.not_to change { word.reload.content }
+        end
       end
     end
 
-    context 'Invalid params' do
-      let(:params) do
-        { id: word.id, word: { content: '' } }
+    context 'When user is not signed in' do
+      context 'Valid params' do
+        subject { put :update, params: params }
+        let(:params) do
+          { id: word.id, word: { content: 'gato', language_id: language_es.id } }
+        end
+
+        it 'Does not update word' do
+          expect { subject }.not_to change { word.reload.content }
+        end
       end
 
-      it 'does not update word' do
-        expect { subject }.not_to change { word.reload.content }
+      context 'Invalid params' do
+        subject { put :update, params: params }
+        let(:params) do
+          { id: word.id, word: { content: '' } }
+        end
+
+        it 'does not update word' do
+          expect { subject }.not_to change { word.reload.content }
+        end
       end
     end
   end
@@ -211,13 +260,30 @@ RSpec.describe WordsController, type: :controller do
     subject { delete :destroy, params: params }
     let!(:word) { create(:word) }
 
-    context 'Valid params' do
-      let(:params) do
-        { id: word.id }
-      end
+    context 'When user is signed in' do
+      let(:user) { create(:user) }
+      before { sign_in(user) }
 
-      it 'deletes word' do
-        expect { subject }.to change(Word, :count).from(1).to(0)
+      context 'Valid params' do
+        let(:params) do
+          { id: word.id }
+        end
+
+        it 'deletes word' do
+          expect { subject }.to change(Word, :count).from(1).to(0)
+        end
+      end
+    end
+
+    context 'When user is not signed in' do
+      context 'Valid params' do
+        let(:params) do
+          { id: word.id }
+        end
+
+        it 'does not delete word' do
+          expect { subject }.not_to change(Word, :count)
+        end
       end
     end
   end
