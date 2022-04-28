@@ -51,6 +51,7 @@ gem 'bootsnap', require: false
 
 gem 'haml-rails'
 gem 'language_list', '~> 1.2', '>= 1.2.1'
+gem 'pundit'
 gem 'simple_form'
 
 group :development, :test do
