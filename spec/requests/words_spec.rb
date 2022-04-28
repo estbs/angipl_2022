@@ -166,10 +166,10 @@ RSpec.describe WordsController, type: :controller do
       { id: word.id }
     end
 
-    let(:word) { create(:word) }
+    let(:word) { create(:word, user: user) }
+    let(:user) { create(:user) }
 
     context 'When user is signed in' do
-      let(:user) { create(:user) }
       before do
         sign_in(user)
         subject
@@ -197,12 +197,12 @@ RSpec.describe WordsController, type: :controller do
   end
 
   describe 'PUT update' do
-    let(:word) { create(:word, content: 'cat', language: language_en) }
+    let(:word) { create(:word, user: user, content: 'cat', language: language_en) }
     let(:language_en) { create(:language, name: 'English') }
     let(:language_es) { create(:language, name: 'Spanish') }
+    let(:user) { create(:user) }
 
     context 'When user is signed in' do
-      let(:user) { create(:user) }
       before { sign_in(user) }
 
       context 'Valid params' do
@@ -258,10 +258,10 @@ RSpec.describe WordsController, type: :controller do
 
   describe 'DELETE destroy' do
     subject { delete :destroy, params: params }
-    let!(:word) { create(:word) }
+    let!(:word) { create(:word, user: user) }
+    let(:user) { create(:user) }
 
     context 'When user is signed in' do
-      let(:user) { create(:user) }
       before { sign_in(user) }
 
       context 'Valid params' do
