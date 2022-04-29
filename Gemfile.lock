@@ -163,6 +163,7 @@ GEM
     mini_mime (1.1.2)
     minitest (5.15.0)
     msgpack (1.5.1)
+    nested_form (0.3.2)
     net-imap (0.2.3)
       digest
       net-protocol
@@ -314,6 +315,7 @@ DEPENDENCIES
   jbuilder
   kaminari
   language_list (~> 1.2, >= 1.2.1)
+  nested_form
   pg
   puma (~> 5.0)
   pundit

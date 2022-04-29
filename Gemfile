@@ -53,6 +53,7 @@ gem 'bootstrap5-kaminari-views'
 gem 'haml-rails'
 gem 'kaminari'
 gem 'language_list', '~> 1.2', '>= 1.2.1'
+gem 'nested_form'
 gem 'pundit'
 gem 'simple_form'
 

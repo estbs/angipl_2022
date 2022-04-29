@@ -10,4 +10,6 @@ class Word < ApplicationRecord
   validates :content, :language, presence: true
 
   paginates_per 10
+
+  accepts_nested_attributes_for :translations
 end

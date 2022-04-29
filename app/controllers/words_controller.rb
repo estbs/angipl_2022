@@ -13,6 +13,10 @@ class WordsController < ApplicationController
   def create
     @word = Word.new(word_params)
     @word.user = current_user
+    @word.translations.each do |translation|
+      translation.user = current_user
+    end
+
     if @word.save
       redirect_to words_path
     else
@@ -44,7 +48,12 @@ class WordsController < ApplicationController
   private
 
   def word_params
-    params.require(:word).permit(:content, :language_id)
+    params.require(:word)
+          .permit(
+            :content,
+            :language_id,
+            translations_attributes: %i[id content language_id _destroy]
+          )
   end
 
   def set_word
