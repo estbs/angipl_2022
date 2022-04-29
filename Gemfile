@@ -49,7 +49,9 @@ gem 'bootsnap', require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem 'bootstrap5-kaminari-views'
 gem 'haml-rails'
+gem 'kaminari'
 gem 'language_list', '~> 1.2', '>= 1.2.1'
 gem 'pundit'
 gem 'simple_form'

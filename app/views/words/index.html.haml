@@ -20,3 +20,4 @@
           = link_to('Show', word_path(word), class: 'btn btn-primary')
           = link_to('Edit', edit_word_path(word), class: 'btn btn-primary')
           = link_to('Delete', word_path(word), class: 'btn btn-danger', data: { turbo_method: :delete, turbo_confirm: "Are you sure?" })
+= paginate @words, theme: 'bootstrap-5'
