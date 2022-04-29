@@ -3,7 +3,7 @@ class WordsController < ApplicationController
   before_action :set_word, only: %i[show edit update destroy]
 
   def index
-    @words = Word.all
+    @words = Word.page params[:page]
   end
 
   def new
@@ -13,6 +13,10 @@ class WordsController < ApplicationController
   def create
     @word = Word.new(word_params)
     @word.user = current_user
+    @word.translations.each do |translation|
+      translation.user = current_user
+    end
+
     if @word.save
       redirect_to words_path
     else
@@ -22,9 +26,12 @@ class WordsController < ApplicationController
 
   def show; end
 
-  def edit; end
+  def edit
+    authorize @word
+  end
 
   def update
+    authorize @word
     if @word.update(word_params)
       redirect_to word_path(@word)
     else
@@ -33,6 +40,7 @@ class WordsController < ApplicationController
   end
 
   def destroy
+    authorize @word
     @word.destroy
     redirect_to words_path
   end
@@ -40,7 +48,12 @@ class WordsController < ApplicationController
   private
 
   def word_params
-    params.require(:word).permit(:content, :language_id)
+    params.require(:word)
+          .permit(
+            :content,
+            :language_id,
+            translations_attributes: %i[id content language_id _destroy]
+          )
   end
 
   def set_word

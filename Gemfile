@@ -49,8 +49,12 @@ gem 'bootsnap', require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem 'bootstrap5-kaminari-views'
 gem 'haml-rails'
+gem 'kaminari'
 gem 'language_list', '~> 1.2', '>= 1.2.1'
+gem 'nested_form'
+gem 'pundit'
 gem 'simple_form'
 
 group :development, :test do
@@ -66,6 +70,8 @@ group :development, :test do
 end
 
 group :development do
+  gem 'brakeman'
+  gem 'bundler-audit'
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
 
